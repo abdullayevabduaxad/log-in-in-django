@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ochiladigan Faylni Tanlash</title>
+    <style>
+        #selectedFile {
+            font-weight: bold;
+            color: green;
+            margin-top: 20px;
+        }
+
+        #selectedImage {
+            max-width: 100%;
+            height: auto;
+            display: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <input type="file" id="fileInput" style="display: none;">
+    <button onclick="openFile()">Faylni Tanlash</button>
+
+    <div id="selectedFile"></div>
+    <img id="selectedImage" alt="Tanlangan rasm" style="width: 100px; height: 100px; border-radius: 50%;">
+
+    <script>
+        function openFile() {
+            var fileInput = document.getElementById('fileInput');
+            var selectedFileDiv = document.getElementById('selectedFile');
+            var selectedImage = document.getElementById('selectedImage');
+
+            // Simulate a click on the hidden file input
+            fileInput.click();
+
+            // Add an event listener to detect when a file is selected
+            fileInput.addEventListener('change', function() {
+                var selectedFile = fileInput.files[0];
+                if (selectedFile) {
+                    // Update the selected file text
+
+                    // Display the selected image
+                    if (selectedFile.type.startsWith('image/')) {
+                        var reader = new FileReader();
+                        reader.onload = function(e) {
+                            selectedImage.src = e.target.result;
+                            selectedImage.style.display = 'block';
+                        };
+                        reader.readAsDataURL(selectedFile);
+                    } else {
+                        // For non-image files, open the file in a new tab
+                        window.open(URL.createObjectURL(selectedFile), '_blank');
+                    }
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
